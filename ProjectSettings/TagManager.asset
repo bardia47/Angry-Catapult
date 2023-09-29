@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Ground
+  - Cannonball
+  - Plank
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: TileMaps
+    uniqueID: 1473689835
+    locked: 0
+  - name: Planks
+    uniqueID: 779592377
+    locked: 0
+  - name: Enemies
+    uniqueID: 385105423
+    locked: 0
+  - name: CannonBall
+    uniqueID: 3265135383
+    locked: 0
+  - name: Launcher
+    uniqueID: 1333446265
+    locked: 0
+  - name: UI
+    uniqueID: 995039093
+    locked: 0
