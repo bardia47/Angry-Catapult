@@ -167,10 +167,10 @@ MonoBehaviour:
   armRb: {fileID: 6767587347944539922}
   cannonball: {fileID: 0}
   initArmRotation: {x: 0, y: 0, z: 0, w: 0}
-  forcePower: 60
+  forcePower: 100
   rotateSpeed: 5
-  minForce: 95
-  maxForce: 255
+  minForce: 50
+  maxForce: 150
   forceScalar: 25
   maxRotate: -40
   minRotate: -30

@@ -61,6 +61,7 @@ public class Enemy : MonoBehaviour
         {
             isDead = true;
             health = 0;
+            AudioManager.instance.CreateAndPlaySound(SoundClips.POOF, null, 0.3f, 1f);
             ScoreManager.IncreasePoint(points);
             rb.constraints = RigidbodyConstraints2D.FreezeAll;
             Quaternion rotation = transform.rotation;

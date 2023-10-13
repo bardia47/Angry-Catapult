@@ -46,6 +46,7 @@ public class BallManager : MonoBehaviour
         Transform t = Instantiate(ballPrefab, catapultFireSlot).transform;
         catapult.cannonball = t;
         FindObjectOfType<MoveCamera>().target = t.gameObject;
+        UIManager.instance.UpdateBallsLeft();
     }
 }
 

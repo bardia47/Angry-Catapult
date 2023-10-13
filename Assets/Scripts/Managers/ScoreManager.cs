@@ -41,6 +41,8 @@ public class ScoreManager : MonoBehaviour
     private void Start()
     {
         CalculateThresholds();
+        UIManager.instance.UpdateStarsThreshHolds();
+
     }
 
     private void CalculateThresholds()
@@ -68,7 +70,7 @@ public class ScoreManager : MonoBehaviour
     }
     private void HandleScore()
     {
-
+        UIManager.instance.UpdateStarsThreshHolds();
     }
     public bool isAboveThresholds => score >= thresholdBronze;
 

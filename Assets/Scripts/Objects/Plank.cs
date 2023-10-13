@@ -23,6 +23,8 @@ public class Plank : MonoBehaviour
         {
             if (other.collider.CompareTag("Cannonball"))
             {
+
+                    AudioManager.instance.CreateAndPlaySound(SoundClips.THUD, null, 0.3f, 1f);
                 DustManager.CreateDust(other.collider.ClosestPoint(this.transform.position));
             }
 
@@ -30,6 +32,8 @@ public class Plank : MonoBehaviour
         }
         if (other.collider.CompareTag("Cannonball"))
         {
+            AudioManager.instance.CreateAndPlaySound(SoundClips.THUD, null, 0.3f, 1f);
+
             DustManager.CreateDust(other.collider.ClosestPoint(this.transform.position));
             
             health--;
@@ -48,6 +52,9 @@ public class Plank : MonoBehaviour
 
     private void Break()
     {
+
+        AudioManager.instance.CreateAndPlaySound(SoundClips.WOODBREAK, null, 0.5f, 1f);
+
         sr.sprite = LevelManager.instance.PickBrokenPlantSprite;
         box.enabled = false;
         capsule.enabled = true;

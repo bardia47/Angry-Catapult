@@ -36,10 +36,21 @@ public class CannonBall : MonoBehaviour
                 {
 
                     BallManager.instance.ballsLeft--;
-                    if (BallManager.instance.ballsLeft > 0)
+
+                    if (LevelManager.instance.CheckForVictory)
                     {
-                        BallManager.instance.catapult.ResetCatapult();
-                        BallManager.instance.SpawnBall();
+                        UIManager.instance.ToggleEndScreen(ScoreManager.instance.isAboveThresholds);
+                    }
+                    else {
+                        if (BallManager.instance.ballsLeft > 0)
+                        {
+                            BallManager.instance.catapult.ResetCatapult();
+                            BallManager.instance.SpawnBall();
+                        }
+                        else {
+                            UIManager.instance.ToggleEndScreen(ScoreManager.instance.isAboveThresholds);
+
+                        }
                     }
                 }
             }
@@ -56,6 +67,9 @@ public class CannonBall : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.collider.CompareTag("Ground")) {
+
+            AudioManager.instance
+                .CreateAndPlaySound(SoundClips.THUD, this.transform.position, 1f, 1f);
             DustManager.CreateDust(other.collider.ClosestPoint(this.transform.position));
         }
     }

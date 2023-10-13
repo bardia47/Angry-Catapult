@@ -32,6 +32,12 @@ public class Catapult : MonoBehaviour
 
     private void Update()
     {
+
+        if (GameManager.instance.currentState == GameStates.END ||
+            GameManager.instance.currentState == GameStates.PAUSE ||
+            GameManager.instance.currentState == GameStates.MAINMENU)
+            return;
+
         if (armRb.angularVelocity > angVel)
         {
             angVel = armRb.angularVelocity;
@@ -43,33 +49,52 @@ public class Catapult : MonoBehaviour
         vertical = Input.GetAxisRaw("Vertical");
         if (Input.GetButtonDown("Fire1"))
         {
+            AudioManager.instance.CreateAndPlaySound(SoundClips.CATAPULT, this.transform.position, 1f, 1f, false);
             Plank[] planks = FindObjectsOfType<Plank>();
             foreach (Plank p in planks){
                 p.damageable = true;
             }
             allowInput = false;
             launched = true;
+
+            UIManager.instance.ToggleCatapultBars();
+
             Camera.main.DOOrthoSize(FindObjectOfType<MoveCamera>().endingOrthoSize, 2.2f).SetDelay(0.7f);
         }
 
         if (vertical != 0f) {
             CurrentRotate += vertical * Time.deltaTime;
-            forcePower = (minForce + maxForce) / 2;
+           // forcePower = (minForce + maxForce) / 2;
             CurrentRotate = Mathf.Clamp(CurrentRotate,maxRotate,minRotate);
-        
+            UIManager.instance.angleSlider.value = CurrentRotate;
+            UIManager.instance.UpdateAngle();
         }
         if (horizontal != 0f)
         {
             forcePower += horizontal * forceScalar * Time.deltaTime;
             forcePower = Mathf.Clamp(forcePower, minForce, maxForce);
-
+            UIManager.instance.powerSlider.value = forcePower;
+            UIManager.instance.UpdatePower();
         }
 
     }
     private void Start()
     {
         CurrentRotate = (minRotate + maxRotate) / 2;
+        forcePower = (minForce + maxForce) / 2;
         initArmRotation = armRb.transform.rotation;
+
+        UIManager.instance.angleSlider.minValue = maxRotate;
+        UIManager.instance.angleSlider.maxValue = minRotate;
+        UIManager.instance.angleSlider.value= (minRotate + maxRotate) / 2;
+        UIManager.instance.UpdateAngle();
+
+        UIManager.instance.powerSlider.minValue = minForce;
+        UIManager.instance.powerSlider.maxValue = maxForce;
+        UIManager.instance.powerSlider.value = (minForce + maxForce) / 2;
+        UIManager.instance.UpdatePower();
+
+
     }
 
     private void FixedUpdate()
@@ -95,6 +120,7 @@ public class Catapult : MonoBehaviour
         armRb.angularVelocity = 0f;
         allowInput = true;
         Camera.main.DOOrthoSize(3.5f, 0.5f);
+        UIManager.instance.ToggleCatapultBars();
 
     }
 }
