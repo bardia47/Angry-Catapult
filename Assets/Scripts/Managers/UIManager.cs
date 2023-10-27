@@ -33,17 +33,24 @@ public class UIManager : MonoBehaviour
     [Header("Pause")]
     public Image musicPause;
     public Sprite musicOnSprite, musicOffSprite;
-    public Image[] pauseStars;
+   // public Image[] pauseStars;
 
     [Header("Victory")]
-    public Image musicEnd;
-
+  //  public Image musicEnd;
     public Image[] victoryStars;
     public TMP_Text victoryScore;
     public TMP_Text winStatusTitleText;
     public Button nextLevelButton;
 
 
+
+    [Header("Background")]
+   // public float moveHorizontal ;
+   // public float offsetHorizontal ;
+    public Transform background;
+
+    [Header("enemyScore")]
+    public TMP_Text enemyScore;
 
 
 
@@ -59,17 +66,42 @@ public class UIManager : MonoBehaviour
     }
     private void Start()
     {
+        if (ApplicationUtils.isPhoneMode())
+        {
+            powerNum.transform.localScale = Vector3.zero;
+            angleNum.transform.localScale = Vector3.zero;
+        }
+
+        musicPause.sprite = AudioListener.volume == 1f ? musicOnSprite : musicOffSprite;
+
+        setPreLanchPosition();
         FadeIn();
         UpdateStarsThreshHolds();
     }
+
+    public void ShowEnemyScore(Transform enemy,int points)
+    {
+        TMP_Text text =  Instantiate(enemyScore, enemy.position,Quaternion.identity, GetComponentsInChildren<Canvas>()[0].transform);
+        text.text = points.ToString();
+        text.transform.DOScale(1f, 1f);
+        text.transform.DOMoveY(3, 1f).OnComplete(()=> text.DOFade(0,1f).OnComplete(()=>Destroy(text)));
+        //  text.DOFade(0f, 2f).OnComplete(() => Destroy(text));
+
+
+    }
+
     private void Update()
     {
-        if (Input.GetButtonDown("Pause"))
+        if (Application.platform!=RuntimePlatform.Android && Input.GetButtonDown("Pause"))
         {
             TogglePauseMenu();
         }
     }
 
+    private void LateUpdate()
+    {
+        background.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, background.position.z);
+    }
 
     public void UpdateAngle()
     {
@@ -81,8 +113,17 @@ public class UIManager : MonoBehaviour
 
     public void UpdatePower()
     {
+        if (BallManager.instance.catapult == null)
+            BallManager.instance.catapult = FindObjectOfType<Catapult>();
         BallManager.instance.catapult.forcePower = powerSlider.value;
         powerNum.text = $"{((BallManager.instance.catapult.forcePower - BallManager.instance.catapult.minForce) / (BallManager.instance.catapult.maxForce - BallManager.instance.catapult.minForce) * 100).ToString("F0")}";
+    }
+
+    public void LaunchCatapult()
+    {
+        if (BallManager.instance.catapult == null)
+            BallManager.instance.catapult = FindObjectOfType<Catapult>();
+        BallManager.instance.catapult.LaunchCatapult();
     }
 
     public void UpdateBallsLeft()
@@ -97,8 +138,7 @@ public class UIManager : MonoBehaviour
     public void UpdateStarsThreshHolds()
     {
 
-        inGameScore.text = ScoreManager.instance.Score.ToString("00000");
-        victoryScore.text = ScoreManager.instance.Score.ToString("00000");
+        inGameScore.text = ScoreManager.instance.Score.ToString("0000");
 
         if (ScoreManager.instance.Score >= ScoreManager.instance.thresholdBronze)
         {
@@ -108,7 +148,7 @@ public class UIManager : MonoBehaviour
 
 
             inGameStars[0].transform.DOScale(1f, 0.2f);
-            pauseStars[0].transform.localScale = Vector3.one;
+            //pauseStars[0].transform.localScale = Vector3.one;
 
         }
         if (ScoreManager.instance.Score >= ScoreManager.instance.thresholdSilver)
@@ -118,7 +158,7 @@ public class UIManager : MonoBehaviour
 
 
             inGameStars[1].transform.DOScale(1f, 0.2f);
-            pauseStars[1].transform.localScale = Vector3.one;
+           // pauseStars[1].transform.localScale = Vector3.one;
 
         }
         if (ScoreManager.instance.Score >= ScoreManager.instance.thresholdGold)
@@ -129,7 +169,7 @@ public class UIManager : MonoBehaviour
 
 
             inGameStars[2].transform.DOScale(1f, 0.2f);
-            pauseStars[2].transform.localScale = Vector3.one;
+          //  pauseStars[2].transform.localScale = Vector3.one;
 
         }
 
@@ -167,11 +207,16 @@ public class UIManager : MonoBehaviour
         musicPause.sprite = musicPause.sprite == musicOnSprite ? musicOffSprite : musicOnSprite;
     }
 
-    public void OnAudioToggleEnd()
-    {
-        AudioListener.volume = AudioListener.volume == 1f ? 0f : 1f;
-        musicEnd.sprite = musicEnd.sprite == musicOnSprite ? musicOffSprite : musicOnSprite;
+    public void OnLevelSelectTogglePause() {
+        GameManager.ChangeState(GameStates.END);
+        FadeOut(GameManager.SCENE_MENU);
     }
+
+    /* public void OnAudioToggleEnd()
+     {
+         AudioListener.volume = AudioListener.volume == 1f ? 0f : 1f;
+         musicEnd.sprite = musicEnd.sprite == musicOnSprite ? musicOffSprite : musicOnSprite;
+     }*/
 
     public void ToggleEndScreen(bool win)
     {
@@ -202,16 +247,18 @@ public class UIManager : MonoBehaviour
             {
                 victoryCg.blocksRaycasts = victoryCg.alpha == 1f;
                 victoryCg.interactable = victoryCg.alpha == 1f;
+
+               
+
             });
-        if (ScoreManager.instance.isAboveThresholds)
-        {
-            ShowStars();
-        }
+        ShowStars();
 
     }
 
     private void ShowStars()
     {
+        StartCoroutine(UpdateVictoryScore());//(ScoreManager.instance.thresholdBronze));
+
         if (ScoreManager.instance.isAboveThresholds)
         {
             victoryStars[0].transform.DOScale(1f, 0.2f).SetUpdate(true)
@@ -221,6 +268,7 @@ public class UIManager : MonoBehaviour
                     if (PlayerPrefs.GetInt($"{SceneManager.GetActiveScene().buildIndex}") < 1)
                         PlayerPrefs.SetInt($"{SceneManager.GetActiveScene().buildIndex}", 1);
                     AudioManager.instance.CreateAndPlaySound(SoundClips.GOSTAR, null, 0.7f, 1f);
+
                     if (ScoreManager.instance.Score >= ScoreManager.instance.thresholdSilver)
                     {
                         victoryStars[1].transform.DOScale(1f, 0.2f).SetUpdate(true)
@@ -235,9 +283,10 @@ public class UIManager : MonoBehaviour
 
             if (ScoreManager.instance.Score >= ScoreManager.instance.thresholdGold)
             {
-               
+
                 victoryStars[2].transform.DOScale(1f, 0.2f)
-                .SetUpdate(true).SetEase(Ease.OutBack).OnComplete(()=> {
+                .SetUpdate(true).SetEase(Ease.OutBack).OnComplete(() =>
+                {
                     if (PlayerPrefs.GetInt($"{SceneManager.GetActiveScene().buildIndex}") < 3)
                         PlayerPrefs.SetInt($"{SceneManager.GetActiveScene().buildIndex}", 3);
                     AudioManager.instance.CreateAndPlaySound(SoundClips.GOSTAR, null, 0.7f, 1f);
@@ -250,6 +299,17 @@ public class UIManager : MonoBehaviour
                     }
                 }
                 );
+        }
+    }
+
+    private IEnumerator UpdateVictoryScore()//(int threshold)
+    {
+        double waitTime = 1f / (ScoreManager.instance.Score*5);
+        for (int i = int.Parse(victoryScore.text); i <= (/*ScoreManager.instance.Score > threshold ? threshold :*/ ScoreManager.instance.Score); i++)
+        {
+            yield return new WaitForSeconds(Convert.ToSingle(waitTime));
+
+            victoryScore.text = i.ToString("0000");
         }
     }
 
@@ -267,6 +327,12 @@ public class UIManager : MonoBehaviour
     {
         fader.DOFillAmount(0f, 0.3f).SetDelay(0.5f);
     }
+    private void setPreLanchPosition()
+    {
+        catapultBarsCg.transform.position = FindObjectOfType<Catapult>().transform.position;
+    }
+  
+
 
     public void OnRestartLevel()
     {

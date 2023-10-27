@@ -33,13 +33,31 @@ public class MainMenu : MonoBehaviour
     public bool fullScreen;
     public int resolutionIndex;
     private Resolution[] resolutions;
-    public TMP_Text resoText, fullscreenText, volumeText;
+    public TMP_Text resoText, fullscreenText;//, volumeText;
+
+
+    [Header("Music")]
+    public Image music;
+    public Sprite musicOnSprite, musicOffSprite;
 
 
     private void Start()
     {
+        if (ApplicationUtils.isPhoneMode())
 
-        resolutions = Screen.resolutions;
+        {
+            foreach (var item in buttonsCg.GetComponentsInChildren<Button>())
+            {
+                if (!item.CompareTag("PlayButton"))
+                {
+                    item.transform.localScale = Vector3.zero;
+                }
+            }
+
+        } else { 
+        resolutions = Screen.resolutions; 
+        }
+
         Sequence s = DOTween.Sequence();
         s.AppendInterval(0.5f);
         s.AppendCallback(() => {
@@ -94,6 +112,7 @@ public class MainMenu : MonoBehaviour
             }
             levelsHolder.GetChild(i).GetComponent<Button>().navigation = nav;
         }
+        music.sprite = AudioListener.volume == 1f ? musicOnSprite : musicOffSprite;
 
     }
 
@@ -230,7 +249,9 @@ public class MainMenu : MonoBehaviour
     public void OnVolume()
     {
         AudioListener.volume = AudioListener.volume == 1f ? 0f : 1f;
-        volumeText.text = AudioListener.volume==1f ? "On" : "Off";
+        //volumeText.text = AudioListener.volume==1f ? "On" : "Off";
+        music.sprite = music.sprite == musicOnSprite ? musicOffSprite : musicOnSprite;
+
     }
 
     public void OnApplySettings() {

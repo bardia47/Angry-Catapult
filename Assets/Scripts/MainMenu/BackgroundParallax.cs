@@ -11,7 +11,9 @@ public class BackgroundParallax : MonoBehaviour
 
     private void Update()
     {
-        mousePos = Input.mousePosition;
+
+        if (!ApplicationUtils.isPhoneMode())
+            mousePos = Input.mousePosition;
     }
     private void LateUpdate()
     {

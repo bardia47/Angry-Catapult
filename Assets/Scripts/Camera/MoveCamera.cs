@@ -44,7 +44,9 @@ public class MoveCamera : MonoBehaviour
 
          { if (lockToTarget)
                  c.toggleFollow = true;
-                 });
+                 
+         }
+         );
             
     }
 }

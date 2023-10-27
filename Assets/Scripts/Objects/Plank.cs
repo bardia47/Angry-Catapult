@@ -12,11 +12,13 @@ public class Plank : MonoBehaviour
     public bool damageable = false;
     public BoxCollider2D box;
     public CapsuleCollider2D capsule;
+    public float breakSoundPitch = 1f;
+    public float breakSoundVolume= .5f;
 
-  /*  private void Start()
-    {
-        sr = GetComponentInChildren<SpriteRenderer>();
-    }*/
+    /*  private void Start()
+      {
+          sr = GetComponentInChildren<SpriteRenderer>();
+      }*/
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (health == 0 || !damageable)
@@ -53,7 +55,7 @@ public class Plank : MonoBehaviour
     private void Break()
     {
 
-        AudioManager.instance.CreateAndPlaySound(SoundClips.WOODBREAK, null, 0.5f, 1f);
+        AudioManager.instance.CreateAndPlaySound(SoundClips.WOODBREAK, null, breakSoundVolume, breakSoundPitch);
 
         sr.sprite = LevelManager.instance.PickBrokenPlantSprite;
         box.enabled = false;

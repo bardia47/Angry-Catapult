@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3794385733129077549}
   - component: {fileID: 2124132471348106593}
   m_Layer: 0
-  m_Name: Plank
+  m_Name: Stone
   m_TagString: Plank
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,7 +74,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 6
+  m_Mass: 12
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -96,12 +96,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sr: {fileID: 7450147582874248655}
-  points: 10
-  health: 1
+  points: 20
+  health: 2
   damageable: 0
   box: {fileID: 782967093843490637}
   capsule: {fileID: 2124132471348106593}
-  breakSoundPitch: 1
+  breakSoundPitch: 0.7
+  breakSoundVolume: 0.8
 --- !u!70 &2124132471348106593
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -192,7 +193,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 45e4c6a702b7e6a418629df57bb7fa64, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.1792453, g: 0.1792453, b: 0.1792453, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

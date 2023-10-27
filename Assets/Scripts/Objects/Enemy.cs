@@ -21,7 +21,7 @@ public class Enemy : MonoBehaviour
     public bool canDamage = false;
     public bool isDead = false;
     public bool isMoving = false;
-    public int points = 100;
+    public int points;
     private Rigidbody2D rb;
     public Animator anim;
 
@@ -60,6 +60,8 @@ public class Enemy : MonoBehaviour
         if (health <= 0f)
         {
             isDead = true;
+            UIManager.instance.ShowEnemyScore(this.GetComponentInChildren<EnemyHeartBox>().transform,points);
+
             health = 0;
             AudioManager.instance.CreateAndPlaySound(SoundClips.POOF, null, 0.3f, 1f);
             ScoreManager.IncreasePoint(points);

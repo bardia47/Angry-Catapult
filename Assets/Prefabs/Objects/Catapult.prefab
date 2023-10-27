@@ -104,7 +104,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1333446265
-  m_SortingLayer: 5
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 1cb1b22ef9ce0c245bfb200e92a54405, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -150,7 +150,7 @@ Transform:
   m_Children:
   - {fileID: 6767587347683265464}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6767587347840845666
 MonoBehaviour:
@@ -169,14 +169,16 @@ MonoBehaviour:
   initArmRotation: {x: 0, y: 0, z: 0, w: 0}
   forcePower: 100
   rotateSpeed: 5
-  minForce: 50
-  maxForce: 150
+  minForce: 90
+  maxForce: 180
   forceScalar: 25
   maxRotate: -40
   minRotate: -30
   CurrentRotate: 0
   allowInput: 0
   launched: 0
+  detectSwipeAfterRelease: 0
+  SWIPE_THRESHOLD: 20
 --- !u!50 &6767587347840845665
 Rigidbody2D:
   serializedVersion: 4
@@ -298,7 +300,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1333446265
-  m_SortingLayer: 5
+  m_SortingLayer: 6
   m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 660f643cdc7fd15478036001cf031aac, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

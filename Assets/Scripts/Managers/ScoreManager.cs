@@ -50,18 +50,24 @@ public class ScoreManager : MonoBehaviour
         Plank[] planks = FindObjectsOfType<Plank>();
         //enemies
         thresholdGold = 0;
-
-        for (int i = 0; i < planks.Length; i++)
+        foreach (Plank plank in planks)
         {
-            thresholdGold += planks[i].points;
+            thresholdGold += plank.points;
+        }
 
-
+        Enemy[] enemies = FindObjectsOfType<Enemy>();
+        int enemiesPoint = 0;
+        foreach (Enemy enemy in enemies)
+        {
+            enemiesPoint += enemy.points;
 
         }
+        thresholdGold += enemiesPoint;
+
         thresholdGold = Mathf.RoundToInt(thresholdGold * 0.9f);
         thresholdSilver = Mathf.RoundToInt(thresholdGold * 0.75f);
 
-        thresholdBronze = Mathf.RoundToInt(thresholdSilver * 0.75f);
+        thresholdBronze = Mathf.RoundToInt(enemiesPoint< (thresholdSilver * 0.75f)? enemiesPoint : thresholdSilver * 0.75f);
 
     }
 
