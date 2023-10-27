@@ -78,6 +78,6 @@ public class ScoreManager : MonoBehaviour
     {
         UIManager.instance.UpdateStarsThreshHolds();
     }
-    public bool isAboveThresholds => score >= thresholdBronze;
+    public bool isAboveThresholds => score >= thresholdBronze && LevelManager.instance.CheckForVictory;
 
 }

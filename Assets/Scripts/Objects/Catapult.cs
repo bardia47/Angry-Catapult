@@ -26,15 +26,15 @@ public class Catapult : MonoBehaviour
     public bool launched = false;
 
 
-    private float horizontal;
-    private float vertical;
+   // private float horizontal;
+   // private float vertical;
 
-    private Vector2 fingerDownPos;
-    private Vector2 fingerUpPos;
+   // private Vector2 fingerDownPos;
+   // private Vector2 fingerUpPos;
 
-    public bool detectSwipeAfterRelease = false;
+  //  public bool detectSwipeAfterRelease = false;
 
-    public float SWIPE_THRESHOLD = 20f;
+  //  public float SWIPE_THRESHOLD = 20f;
 
 
     private void Update()
@@ -162,7 +162,7 @@ public class Catapult : MonoBehaviour
        
     }*/
 
-    float VerticalMoveValue()
+  /*  float VerticalMoveValue()
     {
         return Mathf.Abs(fingerDownPos.y - fingerUpPos.y);
     }
@@ -171,7 +171,7 @@ public class Catapult : MonoBehaviour
     {
         return Mathf.Abs(fingerDownPos.x - fingerUpPos.x);
     }
-
+*/
   
 
     private void Start()

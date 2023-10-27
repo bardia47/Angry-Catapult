@@ -169,8 +169,8 @@ MonoBehaviour:
   initArmRotation: {x: 0, y: 0, z: 0, w: 0}
   forcePower: 100
   rotateSpeed: 5
-  minForce: 90
-  maxForce: 180
+  minForce: 70
+  maxForce: 140
   forceScalar: 25
   maxRotate: -40
   minRotate: -30
