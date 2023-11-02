@@ -92,10 +92,10 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        if (Application.platform!=RuntimePlatform.Android && Input.GetButtonDown("Pause"))
+      /*  if (Application.platform!=RuntimePlatform.Android && Input.GetButtonDown("Pause"))
         {
             TogglePauseMenu();
-        }
+        }*/
     }
 
     private void LateUpdate()
