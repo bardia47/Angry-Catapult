@@ -135,7 +135,7 @@ public class AudioManager : MonoBehaviour
         a.volume = volume;
         if (audioPitchBend)
         {
-            a.pitch = Random.RandomRange(pitch - 0.15f, pitch + 0.15f);
+            a.pitch = Random.Range(pitch - 0.15f, pitch + 0.15f);
         }
         else a.pitch = pitch;
 

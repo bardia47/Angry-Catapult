@@ -8,7 +8,6 @@ public class Catapult : MonoBehaviour
     public Transform cannonball;
 
     private Quaternion initArmRotation;
-    //  private Vector3 initArmTransform;
     public float forcePower;
     public int rotateSpeed;
     public float minForce;
@@ -19,7 +18,6 @@ public class Catapult : MonoBehaviour
     public float minRotate;
     public float CurrentRotate;
 
-    private float angVel = 0f;
 
 
     public bool allowInput = true;
@@ -34,6 +32,11 @@ public class Catapult : MonoBehaviour
             GameManager.instance.currentState == GameStates.MAINMENU)
             return;
 
+       /* if (launched && armRb.angularVelocity > angVel)
+        {
+            angVel = armRb.angularVelocity;
+        }*/
+
         if (launched || !allowInput)
             return;
 
@@ -43,9 +46,29 @@ public class Catapult : MonoBehaviour
             LaunchCatapult();
         }
 
-
-
+      
     }
+
+
+    private void FixedUpdate()
+    {
+        if (launched)
+        {
+
+            if (Mathf.Rad2Deg * armRb.transform.localRotation.z < CurrentRotate)
+            {
+                //armRb.GetComponent<Collider2D>().enabled = false;
+                cannonball.SetParent(null, true);
+                 float forceScalar =(1  - initArmRotation.z + armRb.transform.rotation.z) * 2;
+                cannonball.GetComponent<Rigidbody2D>().AddForce(cannonball.up * forceScalar * forcePower, ForceMode2D.Impulse);
+              
+                cannonball.GetComponent<CannonBall>().launched = true;
+                launched = false;
+            }
+            armRb.transform.Rotate(-Vector3.forward, rotateSpeed);
+        }
+    }
+
 
     public void LaunchCatapult()
     {
@@ -59,7 +82,6 @@ public class Catapult : MonoBehaviour
 
         if (launched || !allowInput)
             return;
-
         AudioManager.instance.CreateAndPlaySound(SoundClips.CATAPULT, this.transform.position, 1f, 1f, false);
         Plank[] planks = FindObjectsOfType<Plank>();
         foreach (Plank p in planks)
@@ -94,31 +116,9 @@ public class Catapult : MonoBehaviour
 
     }
 
-    private void FixedUpdate()
-    {
-        if (launched)
-        {
-            if (armRb.angularVelocity > angVel)
-            {
-                angVel = armRb.angularVelocity;
-            }
-
-            if (Mathf.Rad2Deg * armRb.transform.localRotation.z < CurrentRotate)
-            {
-                //armRb.GetComponent<Collider2D>().enabled = false;
-                cannonball.SetParent(null, true);
-                cannonball.GetComponent<Rigidbody2D>().AddForce(cannonball.up * angVel  * forcePower,ForceMode2D.Impulse);
-                cannonball.GetComponent<CannonBall>().launched = true;
-                launched = false;
-            }
-            armRb.transform.Rotate(-Vector3.forward, rotateSpeed);
-        }
-    }
-
     public void ResetCatapult()
     {
         armRb.transform.rotation = initArmRotation;
-        angVel = 0f;
         armRb.angularVelocity = 0f;
 
        // armRb.GetComponent<Collider2D>().enabled = true;

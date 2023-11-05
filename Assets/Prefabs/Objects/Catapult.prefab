@@ -168,10 +168,10 @@ MonoBehaviour:
   cannonball: {fileID: 0}
   forcePower: 100
   rotateSpeed: 5
-  minForce: 10
-  maxForce: 18
+  minForce: 70
+  maxForce: 100
   maxRotate: -40
-  minRotate: -30
+  minRotate: -25
   CurrentRotate: 0
   allowInput: 0
   launched: 0
